@@ -11,6 +11,8 @@
 
     <script>
 
+        // function expression
+        // function input should be 3; getComputerChoice(3)
         function getComputerChoice(constant) {
             let choice = Math.floor(Math.random() * constant);
 
@@ -23,19 +25,64 @@
             }
         }
 
+        // arrow function
         let getHumanChoice = () => {
             let choice = prompt("What's your choice?: ").toLowerCase();
 
             if (choice === "rock" || choice === "paper" || choice === "scissors") {
                 return choice;
             } else {
-                return "enter a valid choice!";
+                console.log("enter a valid choice!");
             }
-
         }
 
-        console.log(getHumanChoice())
-        console.log(getComputerChoice(3));
+        function playRound(humanChoice, computerChoice) {
+            if ((humanChoice == "rock" && computerChoice == "paper") || (humanChoice == "paper" && computerChoice == "scissors") || (humanChoice == "scissors" && computerChoice == "rock")) {
+                console.log("You lose! " + computerChoice + " beats " + humanChoice + "!");
+                return "computer";
+            } else if ((humanChoice == "rock" && computerChoice == "scissors") || (humanChoice == "paper" && computerChoice == "rock") || (humanChoice == "scissors" && computerChoice == "paper")) {
+                console.log("You win! " + humanChoice + " beats " + computerChoice + "!");
+                return "human";
+            } else {
+                console.log("it's a tie! Both of your choices were " + humanChoice);
+            }
+        }
+
+        let playGame = (rounds) => {
+            let round = 1;
+            let humanScore = 0;
+            let computerScore = 0;
+
+            while (round <= rounds) {
+
+                const player = getHumanChoice();
+                const cpu = getComputerChoice(3);
+
+                playRound(player, cpu);
+
+                if (playRound(player, cpu) === "human") {
+                    humanScore += 1;
+                } else if (playRound(player, cpu) === "computer") {
+                    computerScore += 1;
+                }
+
+                console.log("Scores[ Player: " + humanScore + " CPU: " + computerScore + " ]")
+                round += 1;
+            }
+
+            if (humanScore < computerScore) {
+                console.log("You lose!")
+            } else if (humanScore > computerScore) {
+                console.log("You win!")
+            } else {
+                console.log("It's a tie!")
+            }
+        }
+
+        // console.log(getHumanChoice())
+        // console.log(getComputerChoice(3));
+
+        playGame(5)
 
     </script>
 
