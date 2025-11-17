@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <script>
+
+        function getComputerChoice(constant) {
+            let choice = Math.floor(Math.random() * constant);
+
+            if (choice == 1) {
+                return "rock";
+            } else if (choice == 2) {
+                return "paper";
+            } else {
+                return "scissors";
+            }
+        }
+
+        let getHumanChoice = () => {
+            let choice = prompt("What's your choice?: ").toLowerCase();
+
+            if (choice === "rock" || choice === "paper" || choice === "scissors") {
+                return choice;
+            } else {
+                return "enter a valid choice!";
+            }
+
+        }
+
+        console.log(getHumanChoice())
+        console.log(getComputerChoice(3));
+
+    </script>
+
+</body>
+
+</html>
