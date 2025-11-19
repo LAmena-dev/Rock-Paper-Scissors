@@ -19,10 +19,10 @@ function getComputerChoice() {
     return choice;
   };
 
-  if (choice == 1) {
+  if (choice === 1) {
     choice = "rock";
     return funcCpuText();
-  } else if (choice == 2) {
+  } else if (choice === 2) {
     choice = "paper";
     return funcCpuText();
   } else {
@@ -37,7 +37,7 @@ let getHumanChoice = (choice) => {
   const pcText = document.querySelector("#pcText");
 
   if (choice === "rock" || choice === "paper" || choice === "scissors") {
-    pcChoice.src = "./images/" + choice + ".jpg";
+    playerChoice.src = "./images/" + choice + ".jpg";
 
     if (pcText) {
       pcText.textContent = choice;
@@ -60,32 +60,50 @@ function playRound(humanChoice, computerChoice) {
 
   let funcRoundText = (res) => {
     if (roundText) {
+      if (res == "You win! " + humanChoice + " beats " + computerChoice + "!") {
+        roundText.setAttribute("style", "color: green");
+      } else if (
+        res ==
+        "You lose! " + computerChoice + " beats " + humanChoice + "!"
+      ) {
+        roundText.setAttribute("style", "color: red");
+      } else {
+        roundText.setAttribute("style", "color: white");
+      }
       roundText.textContent = res;
     } else {
       const roundText = document.createElement("p");
       roundText.id = "roundText";
-      roundText.setAttribute(
-        "style",
-        "text-align:center; margin: 0; padding: 0"
-      );
+      roundText.setAttribute("style", "text-align: center");
+      if (res == "You win! " + humanChoice + " beats " + computerChoice + "!") {
+        roundText.setAttribute("style", "color: green");
+      } else if (
+        res ==
+        "You lose! " + computerChoice + " beats " + humanChoice + "!"
+      ) {
+        roundText.setAttribute("style", "color: red");
+      } else {
+        roundText.setAttribute("style", "color: white");
+      }
+
       roundText.textContent = res;
       round.appendChild(roundText);
     }
   };
 
   if (
-    (humanChoice == "rock" && computerChoice == "paper") ||
-    (humanChoice == "paper" && computerChoice == "scissors") ||
-    (humanChoice == "scissors" && computerChoice == "rock")
+    (humanChoice === "rock" && computerChoice === "paper") ||
+    (humanChoice === "paper" && computerChoice === "scissors") ||
+    (humanChoice === "scissors" && computerChoice === "rock")
   ) {
     const result =
       "You lose! " + computerChoice + " beats " + humanChoice + "!";
     funcRoundText(result);
     return "computer";
   } else if (
-    (humanChoice == "rock" && computerChoice == "scissors") ||
-    (humanChoice == "paper" && computerChoice == "rock") ||
-    (humanChoice == "scissors" && computerChoice == "paper")
+    (humanChoice === "rock" && computerChoice === "scissors") ||
+    (humanChoice === "paper" && computerChoice === "rock") ||
+    (humanChoice === "scissors" && computerChoice === "paper")
   ) {
     const result = "You win! " + humanChoice + " beats " + computerChoice + "!";
     funcRoundText(result);
@@ -93,41 +111,76 @@ function playRound(humanChoice, computerChoice) {
   } else {
     const result = "it's a tie! Both of your choices were " + humanChoice;
     funcRoundText(result);
-    return;
+    return "tie";
   }
 }
 
-let playGame = (rounds) => {
-  let round = 1;
-  let humanScore = 0;
-  let computerScore = 0;
+let playGame = (human) => {
+  //   let round = 1;
+  //   let humanScore = 0;
+  //   let computerScore = 0;
 
-  while (round <= rounds) {
-    const player = getHumanChoice();
-    const cpu = getComputerChoice();
+  //   while (round <= rounds) {
+  const player = getHumanChoice(human);
+  const cpu = getComputerChoice();
 
-    playRound(player, cpu);
-
-    if (playRound(player, cpu) === "human") {
-      humanScore += 1;
-    } else if (playRound(player, cpu) === "computer") {
-      computerScore += 1;
+  let funcWinText = (wText) => {
+    const winText = document.createElement("p");
+    winText.id = "winText";
+    winText.setAttribute("style", "text-align: center");
+    if (humeScore === 5) {
+      winText.setAttribute("style", "color: green");
+    } else {
+      winText.setAttribute("style", "color: red");
     }
+    winText.textContent = wText;
+    round.appendChild(winText);
 
-    console.log(
-      "Scores[ Player: " + humanScore + " CPU: " + computerScore + " ]"
-    );
-    round += 1;
-    roundNum.textContent = "Round " + round;
+    humeScore = 0;
+    humanScore.textContent = humeScore;
+    compScore = 0;
+    computerScore.textContent = compScore;
+    return;
+  };
+
+  playRound(player, cpu);
+
+  if (playRound(player, cpu) === "human") {
+    humeScore += 1;
+    humanScore.textContent = humeScore;
+  } else if (playRound(player, cpu) === "computer") {
+    compScore += 1;
+    computerScore.textContent = compScore;
+  } else if (playRound(player, cpu) === "tie") {
+    ties += 1;
+    tieScore.textContent = ties;
   }
 
-  if (humanScore < computerScore) {
-    console.log("You lose!");
-  } else if (humanScore > computerScore) {
-    console.log("You win!");
-  } else {
-    console.log("It's a tie!");
+  //   console.log(
+  //     "Scores[ Player: " + humanScore + " CPU: " + computerScore + " ]"
+  //   );
+
+  roundNum += 1;
+  rounds.textContent = roundNum;
+  //   }
+
+  if (humeScore === 5 || compScore === 5) {
+    if (humeScore < compScore) {
+      win = "You lose!";
+      funcWinText(win);
+      const tempTies = ties;
+    } else if (humeScore > compScore) {
+      win = "You win!";
+      funcWinText(win);
+      const tempTies = ties;
+    }
+    // else {
+    //   win = "It's a tie!";
+    // }
+  } else if ((humeScore % 5 !== 0 && compScore % 5 !== 0) || tempTies < ties) {
+    round.removeChild(winText);
   }
+  return;
 };
 
 const rockbtn = document.querySelector("#rock");
@@ -138,19 +191,31 @@ const player = document.querySelector(".player");
 const round = document.querySelector(".round");
 const computer = document.querySelector(".computer");
 
-const pcChoice = document.querySelector("#pcChoice");
+const playerChoice = document.querySelector("#playerChoice");
 const cpuChoice = document.querySelector("#cpuChoice");
 
-const roundNum = document.querySelector(".roundNum");
+const humanScore = document.querySelector(".playerScore");
+const rounds = document.querySelector(".roundNum");
+const tieScore = document.querySelector(".ties");
+const computerScore = document.querySelector(".cpuScore");
+
+let roundNum = 1;
+let humeScore = 0;
+let compScore = 0;
+let ties = 0;
+let tempTies = 0;
 
 rockbtn.addEventListener("click", () => {
-  playRound(getHumanChoice("rock"), getComputerChoice());
+  //   playRound(getHumanChoice("rock"), getComputerChoice());
+  playGame("rock");
 });
 paperbtn.addEventListener("click", () => {
-  playRound(getHumanChoice("paper"), getComputerChoice());
+  //   playRound(getHumanChoice("paper"), getComputerChoice());
+  playGame("paper");
 });
 scissorsbtn.addEventListener("click", () => {
-  playRound(getHumanChoice("scissors"), getComputerChoice());
+  //   playRound(getHumanChoice("scissors"), getComputerChoice());
+  playGame("scissors");
 });
 
-// playGame(5)
+// playGame(5);
