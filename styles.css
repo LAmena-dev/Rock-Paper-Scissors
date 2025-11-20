@@ -49,11 +49,18 @@ button {
   border-bottom: 4px rgb(255, 255, 255) solid;
 }
 
-.players {
+.middle {
   display: flex;
+  flex-direction: column;
   flex: 1;
   justify-content: center;
+}
+
+.players {
+  display: flex;
+  justify-content: center;
   align-items: center;
+  margin: 15px 0;
 }
 
 .player,
@@ -69,19 +76,29 @@ button {
   width: 500px;
   height: 400px;
 }
-
 .round {
-  width: 500px;
-  height: 400px;
+  justify-content: center;
 }
 
 .player p,
 .round p,
-.computer p {
-    text-align: center;
+.computer p,
+.instructions p {
+  text-align: center;
   font-size: 36px;
   font-weight: bold;
   margin: 20px;
+}
+
+.instructions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgb(55, 65, 100);
+  border-top: 4px rgb(255, 255, 255) solid;
+  border-bottom: 4px rgb(255, 255, 255) solid;
+  margin: 25px 0;
 }
 
 .choices {

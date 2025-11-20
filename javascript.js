@@ -59,36 +59,17 @@ function playRound(humanChoice, computerChoice) {
   const roundText = document.querySelector("#roundText");
 
   let funcRoundText = (res) => {
-    if (roundText) {
-      if (res == "You win! " + humanChoice + " beats " + computerChoice + "!") {
-        roundText.setAttribute("style", "color: green");
-      } else if (
-        res ==
-        "You lose! " + computerChoice + " beats " + humanChoice + "!"
-      ) {
-        roundText.setAttribute("style", "color: red");
-      } else {
-        roundText.setAttribute("style", "color: white");
-      }
-      roundText.textContent = res;
+    if (res == "You win! " + humanChoice + " beats " + computerChoice + "!") {
+      roundText.setAttribute("style", `color: ${rgbgreen};`);
+    } else if (
+      res ==
+      "You lose! " + computerChoice + " beats " + humanChoice + "!"
+    ) {
+      roundText.setAttribute("style", "color: red");
     } else {
-      const roundText = document.createElement("p");
-      roundText.id = "roundText";
-      roundText.setAttribute("style", "text-align: center");
-      if (res == "You win! " + humanChoice + " beats " + computerChoice + "!") {
-        roundText.setAttribute("style", "color: green");
-      } else if (
-        res ==
-        "You lose! " + computerChoice + " beats " + humanChoice + "!"
-      ) {
-        roundText.setAttribute("style", "color: red");
-      } else {
-        roundText.setAttribute("style", "color: white");
-      }
-
-      roundText.textContent = res;
-      round.appendChild(roundText);
+      roundText.setAttribute("style", "color: white");
     }
+    roundText.textContent = res;
   };
 
   if (
@@ -129,7 +110,7 @@ let playGame = (human) => {
     winText.id = "winText";
     winText.setAttribute("style", "text-align: center");
     if (humeScore === 5) {
-      winText.setAttribute("style", "color: green");
+      winText.setAttribute("style", `color: ${rgbgreen};`);
     } else {
       winText.setAttribute("style", "color: red");
     }
@@ -140,6 +121,11 @@ let playGame = (human) => {
     humanScore.textContent = humeScore;
     compScore = 0;
     computerScore.textContent = compScore;
+    ties = 0;
+    tieScore.textContent = ties;
+    roundNum = 1;
+    rounds.textContent = roundNum;
+
     return;
   };
 
@@ -168,16 +154,14 @@ let playGame = (human) => {
     if (humeScore < compScore) {
       win = "You lose!";
       funcWinText(win);
-      const tempTies = ties;
     } else if (humeScore > compScore) {
       win = "You win!";
       funcWinText(win);
-      const tempTies = ties;
     }
     // else {
     //   win = "It's a tie!";
     // }
-  } else if ((humeScore % 5 !== 0 && compScore % 5 !== 0) || tempTies < ties) {
+  } else if (roundNum === 2) {
     round.removeChild(winText);
   }
   return;
@@ -203,7 +187,8 @@ let roundNum = 1;
 let humeScore = 0;
 let compScore = 0;
 let ties = 0;
-let tempTies = 0;
+
+const rgbgreen = "rgb(25, 211, 0)";
 
 rockbtn.addEventListener("click", () => {
   //   playRound(getHumanChoice("rock"), getComputerChoice());
